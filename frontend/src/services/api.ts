@@ -13,7 +13,7 @@ const ok = <T>(data: T, message?: string): { data: ApiResponse<T> } => ({
 });
 
 // ─── Claves ───────────────────────────────────────────────────
-const PRODUCTS_KEY = 'jalac_products';
+const PRODUCTS_KEY = 'jalac_products_v2';
 const CART_KEY     = 'jalac_cart';
 const ORDERS_KEY   = 'jalac_orders';
 
