@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ── Corazones flotantes ─────────────────────────────── */
+@keyframes float-heart {
+  0%   { transform: translateY(0) rotate(-10deg) scale(1);   opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 0.6; }
+  100% { transform: translateY(-110vh) rotate(20deg) scale(1.1); opacity: 0; }
+}
+
+.heart-float {
+  position: absolute;
+  bottom: -60px;
+  animation: float-heart linear infinite;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Marquee horizontal infinito ────────────────────── */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Contador de números (pulse suave) ──────────────── */
+@keyframes count-glow {
+  0%, 100% { text-shadow: 0 0 0px #f43f5e00; }
+  50%       { text-shadow: 0 0 16px #f43f5e55; }
+}
+
+.stat-number {
+  animation: count-glow 3s ease-in-out infinite;
+}
