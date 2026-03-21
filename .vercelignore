@@ -1,0 +1,2 @@
+# Solo se despliega el frontend; el backend va en otro servicio (Railway, Render, etc.)
+backend

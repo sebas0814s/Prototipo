@@ -1,7 +1,87 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, Cart, CartItem } from '../types';
+import { User, Cart, CartItem, Product } from '../types';
 import { cartApi, userApi } from '../services/api';
+
+// ─── Theme Store ────────────────────────────────────────────
+interface ThemeState {
+  isDark: boolean;
+  toggleTheme: () => void;
+}
+
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set) => ({
+      isDark: false,
+      toggleTheme: () => set((state) => {
+        const newDark = !state.isDark;
+        if (newDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        return { isDark: newDark };
+      }),
+    }),
+    {
+      name: 'theme-storage',
+      onRehydrateStorage: () => (state) => {
+        if (state?.isDark) {
+          document.documentElement.classList.add('dark');
+        }
+      },
+    }
+  )
+);
+
+// ─── Wishlist Store ─────────────────────────────────────────
+interface WishlistState {
+  items: Product[];
+  addItem: (product: Product) => void;
+  removeItem: (productId: string) => void;
+  isInWishlist: (productId: string) => boolean;
+  toggleItem: (product: Product) => void;
+}
+
+export const useWishlistStore = create<WishlistState>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      addItem: (product) => set((state) => ({
+        items: state.items.some((p) => p.id === product.id)
+          ? state.items
+          : [...state.items, product],
+      })),
+      removeItem: (productId) => set((state) => ({
+        items: state.items.filter((p) => p.id !== productId),
+      })),
+      isInWishlist: (productId) => get().items.some((p) => p.id === productId),
+      toggleItem: (product) => {
+        const isIn = get().isInWishlist(product.id);
+        if (isIn) {
+          get().removeItem(product.id);
+        } else {
+          get().addItem(product);
+        }
+      },
+    }),
+    { name: 'wishlist-storage' }
+  )
+);
+
+// ─── Cart Animation Store ───────────────────────────────────
+interface CartAnimationState {
+  bouncing: boolean;
+  triggerBounce: () => void;
+}
+
+export const useCartAnimationStore = create<CartAnimationState>()((set) => ({
+  bouncing: false,
+  triggerBounce: () => {
+    set({ bouncing: true });
+    setTimeout(() => set({ bouncing: false }), 500);
+  },
+}));
 
 // ─── Auth Store ───────────────────────────────────────────────
 interface AuthState {

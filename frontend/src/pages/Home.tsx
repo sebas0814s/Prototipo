@@ -64,6 +64,63 @@ const STATS = [
   { number: '100%', label: 'Garantía real', sub: 'en todos los productos' },
 ];
 
+const TESTIMONIALS = [
+  {
+    name: 'María Camila Rodríguez',
+    role: 'Propietaria de Salon Éclat',
+    location: 'Bogotá',
+    avatar: 'MC',
+    rating: 5,
+    text: 'Las sillas de barbería son espectaculares. Mis clientes no paran de preguntar dónde las compré. La calidad es incomparable y el servicio de entrega fue impeccable.',
+    product: 'Silla de Barbería Premium',
+  },
+  {
+    name: 'Carlos Andrés Martínez',
+    role: 'Barbero profesional',
+    location: 'Medellín',
+    avatar: 'CA',
+    rating: 5,
+    text: 'Después de 3 años usando las sillas de Jalac, puedo decir que son las más cómodo y duraderas del mercado. Inversión que vale cada centavo.',
+    product: 'Silla de Barbería Clásica',
+  },
+  {
+    name: 'Laura Valentina Gómez',
+    role: 'Fundadora Nail Spa Luxury',
+    location: 'Cali',
+    avatar: 'LV',
+    rating: 5,
+    text: 'El mobiliario para mi nail spa quedó increíble. Los espejos LED y las mesas de manicure son de primera. Mis clientas ficam encantados!',
+    product: 'Mesa de Manicure con Luz',
+  },
+  {
+    name: 'Diego Fernando Ruiz',
+    role: 'Director de Peluquería Moderna',
+    location: 'Barranquilla',
+    avatar: 'DR',
+    rating: 5,
+    text: 'La atención al cliente es excepcional. Me ayudaron a elegir el mobiliario perfecto para mi espacio. Los lavacabezas son super cómodos.',
+    product: 'Lavacabezas Ergonómico',
+  },
+  {
+    name: 'Ana Sofía Herrera',
+    role: 'Dueña de Beauty Studio',
+    location: 'Cartagena',
+    avatar: 'AS',
+    rating: 5,
+    text: 'Compré el juego completo para mi barbería y superó todas las expectativas. El acabado en cuero es premium y se ve elegante en cualquier decoración.',
+    product: 'Juego Completo Barbería',
+  },
+  {
+    name: 'Roberto José Díaz',
+    role: 'Barbero y propietario',
+    location: 'Bucaramanga',
+    avatar: 'RJ',
+    rating: 5,
+    text: 'Llevo 5 años equipando salones con Jalac y nunca me han decepcionado. La garantía de 2 años te da total tranquilidad.',
+    product: 'Silla de Recepción',
+  },
+];
+
 export default function Home() {
   const { data, isLoading } = useQuery({
     queryKey: ['products', 'featured'],
@@ -78,12 +135,11 @@ export default function Home() {
 
       {/* ── HERO con corazones flotantes ───────────────────────── */}
       <section
-        className="relative min-h-[88vh] flex items-center justify-center overflow-hidden"
-        style={{ isolation: 'isolate', background: 'linear-gradient(135deg, #fff5f7 0%, #ffffff 50%, #fff0f4 100%)' }}
+        className="relative isolate min-h-[88vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#fff5f7] via-white to-[#fff0f4] dark:from-stone-950 dark:via-stone-900 dark:to-[#1a1216]"
       >
         {/* ── Capa 1 (más baja): corazones flotantes ── */}
         <div
-          className="absolute inset-0 overflow-hidden"
+          className="absolute inset-0 overflow-hidden opacity-100 dark:opacity-40"
           style={{ zIndex: 1, pointerEvents: 'none' }}
         >
           {HEARTS.map((h, i) => (
@@ -103,19 +159,19 @@ export default function Home() {
         </div>
 
         {/* ── Capa 2: círculos decorativos difuminados ── */}
-        <div className="absolute top-10 right-10 w-64 h-64 bg-rose-200/20 rounded-full blur-3xl" style={{ zIndex: 2 }} />
-        <div className="absolute bottom-10 left-10 w-48 h-48 bg-pink-200/20 rounded-full blur-3xl" style={{ zIndex: 2 }} />
+        <div className="absolute top-10 right-10 w-64 h-64 bg-rose-200/20 dark:bg-rose-900/25 rounded-full blur-3xl" style={{ zIndex: 2 }} />
+        <div className="absolute bottom-10 left-10 w-48 h-48 bg-pink-200/20 dark:bg-rose-950/30 rounded-full blur-3xl" style={{ zIndex: 2 }} />
 
         {/* ── Capa 3 (más alta): todo el contenido visible ── */}
         <div className="relative text-center max-w-3xl mx-auto px-4" style={{ zIndex: 10 }}>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-stone-800 leading-tight mb-6">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-stone-800 dark:text-stone-100 leading-tight mb-6">
             Equipa tu salón
             <br />
-            <span className="text-rose-400">con amor</span>
+            <span className="text-rose-400 dark:text-rose-300">con amor</span>
             <span className="inline-block ml-3 animate-bounce">💖</span>
           </h1>
 
-          <p className="text-stone-500 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-stone-500 dark:text-stone-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Sillas de barbería, peluquería, pedicura y nail spa. Diseñadas para profesionales
             que quieren un espacio tan especial como sus clientes.
           </p>
@@ -132,7 +188,7 @@ export default function Home() {
               href="https://wa.me/573046251510?text=Hola!%20Quiero%20cotizar%20mobiliario%20para%20mi%20sal%C3%B3n%20%F0%9F%92%96"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white border border-green-300 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold text-base transition-all shadow-sm"
+              className="inline-flex items-center gap-2 bg-white dark:bg-stone-800 border border-green-300 dark:border-green-700/60 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-stone-700 px-8 py-4 rounded-2xl font-semibold text-base transition-all shadow-sm"
             >
               <WhatsAppIcon />
               Cotizar por WhatsApp
@@ -140,7 +196,7 @@ export default function Home() {
           </div>
 
           {/* Indicador de scroll */}
-          <div className="mt-16 flex flex-col items-center gap-2 text-rose-300 text-xs animate-bounce">
+          <div className="mt-16 flex flex-col items-center gap-2 text-rose-300 dark:text-rose-500/80 text-xs animate-bounce">
             <span>Descubre más</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 12L2 6h12L8 12z" />
@@ -150,11 +206,11 @@ export default function Home() {
       </section>
 
       {/* ── MARQUEE TICKER ─────────────────────────────────────── */}
-      <section className="bg-white border-y border-rose-100 py-0 overflow-hidden">
+      <section className="bg-white dark:bg-stone-900 border-y border-rose-100 dark:border-stone-700 py-0 overflow-hidden">
         <div className="flex items-stretch">
           {/* Etiqueta lateral */}
-          <div className="hidden sm:flex items-center px-5 border-r border-rose-100 bg-rose-50 flex-shrink-0">
-            <span className="text-xs font-bold text-rose-400 uppercase tracking-widest whitespace-nowrap">
+          <div className="hidden sm:flex items-center px-5 border-r border-rose-100 dark:border-stone-700 bg-rose-50 dark:bg-stone-800 flex-shrink-0">
+            <span className="text-xs font-bold text-rose-400 dark:text-rose-300 uppercase tracking-widest whitespace-nowrap">
               Especialidades
             </span>
           </div>
@@ -166,9 +222,9 @@ export default function Home() {
                 <Link
                   key={i}
                   to="/products"
-                  className="inline-flex items-center gap-2.5 mx-5 px-5 py-2.5 rounded-full bg-rose-50 border border-rose-100
-                             text-stone-600 text-sm font-medium whitespace-nowrap
-                             hover:bg-rose-400 hover:text-white hover:border-rose-400 transition-colors"
+                  className="inline-flex items-center gap-2.5 mx-5 px-5 py-2.5 rounded-full bg-rose-50 dark:bg-stone-800 border border-rose-100 dark:border-stone-600
+                             text-stone-600 dark:text-stone-300 text-sm font-medium whitespace-nowrap
+                             hover:bg-rose-400 hover:text-white hover:border-rose-400 dark:hover:border-rose-400 transition-colors"
                 >
                   <span className="text-base">{item.icon}</span>
                   {item.label}
@@ -200,10 +256,10 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-rose-400 text-sm font-semibold uppercase tracking-widest mb-2">
+            <p className="text-rose-400 dark:text-rose-300 text-sm font-semibold uppercase tracking-widest mb-2">
               Lo más vendido
             </p>
-            <h2 className="text-3xl font-bold text-stone-800 leading-tight">
+            <h2 className="text-3xl font-bold text-stone-800 dark:text-stone-100 leading-tight">
               Elegidos por los mejores<br className="hidden sm:block" /> salones del país
             </h2>
           </div>
@@ -226,10 +282,10 @@ export default function Home() {
       </section>
 
       {/* ── CÓMO FUNCIONA ───────────────────────────────────────── */}
-      <section className="bg-rose-50/60 py-16 px-4 border-y border-rose-100">
+      <section className="bg-rose-50/60 dark:bg-stone-900 py-16 px-4 border-y border-rose-100 dark:border-stone-700">
         <div className="max-w-4xl mx-auto">
-          <p className="text-center text-rose-400 text-sm font-semibold uppercase tracking-widest mb-3">Proceso simple</p>
-          <h2 className="text-center text-2xl font-bold text-stone-800 mb-12">¿Cómo equipar tu salón con Jalac?</h2>
+          <p className="text-center text-rose-400 dark:text-rose-300 text-sm font-semibold uppercase tracking-widest mb-3">Proceso simple</p>
+          <h2 className="text-center text-2xl font-bold text-stone-800 dark:text-stone-100 mb-12">¿Cómo equipar tu salón con Jalac?</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
@@ -238,11 +294,79 @@ export default function Home() {
               { step: '03', title: 'Recibe e instala', desc: 'Entregamos en tu local y, si lo necesitas, instalamos sin costo adicional.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex flex-col items-center text-center gap-3">
-                <div className="w-14 h-14 rounded-2xl bg-white border-2 border-rose-200 flex items-center justify-center shadow-sm">
-                  <span className="text-rose-400 font-bold text-lg">{step}</span>
+                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-stone-800 border-2 border-rose-200 dark:border-stone-600 flex items-center justify-center shadow-sm dark:shadow-none">
+                  <span className="text-rose-400 dark:text-rose-300 font-bold text-lg">{step}</span>
                 </div>
-                <h3 className="font-semibold text-stone-700">{title}</h3>
-                <p className="text-stone-400 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-semibold text-stone-700 dark:text-stone-200">{title}</h3>
+                <p className="text-stone-400 dark:text-stone-400 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIOS ───────────────────────────────────────── */}
+      <section className="py-16 px-4 overflow-hidden bg-gradient-to-b from-white to-rose-50/50 dark:from-stone-900 dark:to-stone-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-rose-400 text-sm font-semibold uppercase tracking-widest mb-3">Testimonios</p>
+            <h2 className="text-3xl font-bold text-stone-800 dark:text-white mb-4">
+              Lo que dicen nuestros clientes
+            </h2>
+            <p className="text-stone-500 dark:text-stone-400 max-w-xl mx-auto">
+              Más de 500 salones en Colombia confían en Jalac para equipar sus espacios de belleza
+            </p>
+          </div>
+
+          {/* Carousel */}
+          <div className="relative -mx-4 px-4">
+            <div className="overflow-hidden">
+              <div className="testimonial-track flex gap-5" style={{ width: 'max-content' }}>
+                {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                  <div
+                    key={i}
+                    className="flex-shrink-0 w-80 bg-white dark:bg-stone-700 rounded-2xl p-6 shadow-sm border border-rose-100 dark:border-stone-600"
+                  >
+                    <div className="flex items-center gap-1 mb-3">
+                      {Array.from({ length: t.rating }).map((_, si) => (
+                        <span key={si} className="text-rose-400 text-sm">★</span>
+                      ))}
+                    </div>
+                    <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-4 italic">
+                      "{t.text}"
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-300 to-pink-400 flex items-center justify-center text-white text-sm font-bold">
+                        {t.avatar}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-stone-800 dark:text-white text-sm">{t.name}</p>
+                        <p className="text-stone-400 dark:text-stone-500 text-xs">{t.location}</p>
+                      </div>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-rose-50 dark:border-stone-600">
+                      <p className="text-xs text-rose-400 dark:text-rose-300">
+                        Compró: {t.product}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Indicadores de confianza */}
+          <div className="flex flex-wrap justify-center gap-8 mt-12">
+            {[
+              { icon: '⭐', label: '4.9/5 estrellas', sub: 'en reseñas' },
+              { icon: '🏆', label: '+500', sub: 'clientes satisfechos' },
+              { icon: '🛡️', label: '2 años', sub: 'de garantía' },
+              { icon: '🚚', label: 'Envío gratis', sub: 'en pedidos +$500K' },
+            ].map(({ icon, label, sub }) => (
+              <div key={label} className="flex flex-col items-center gap-1">
+                <span className="text-2xl">{icon}</span>
+                <span className="font-bold text-stone-800 dark:text-white">{label}</span>
+                <span className="text-xs text-stone-400 dark:text-stone-500">{sub}</span>
               </div>
             ))}
           </div>
@@ -250,13 +374,13 @@ export default function Home() {
       </section>
 
       {/* ── CTA FINAL ──────────────────────────────────────────── */}
-      <section className="py-20 px-4 text-center bg-white relative overflow-hidden">
+      <section className="py-20 px-4 text-center bg-white dark:bg-stone-900 relative overflow-hidden border-t border-transparent dark:border-stone-800">
         {/* Corazones decorativos pequeños */}
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
           {['10%','25%','42%','58%','74%','90%'].map((left, i) => (
             <span
               key={i}
-              className="absolute text-rose-100"
+              className="absolute text-rose-100 dark:text-rose-900/40"
               style={{ left, top: `${20 + (i % 3) * 20}%`, fontSize: `${24 + i * 8}px` }}
             >
               ♥
@@ -266,10 +390,10 @@ export default function Home() {
 
         <div className="relative z-10 max-w-2xl mx-auto">
           <span className="text-4xl mb-4 block">💖</span>
-          <h2 className="text-3xl font-bold text-stone-800 mb-4">
+          <h2 className="text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">
             ¿Listo para transformar tu espacio?
           </h2>
-          <p className="text-stone-500 mb-8 leading-relaxed">
+          <p className="text-stone-500 dark:text-stone-400 mb-8 leading-relaxed">
             Más de 500 peluquerías, barberías y nail spas ya confían en Jalac.
             Cuéntanos tu proyecto y te asesoramos gratis.
           </p>
@@ -284,7 +408,7 @@ export default function Home() {
               href="https://wa.me/573046251510?text=Hola!%20Me%20interesa%20conocer%20más%20sobre%20el%20mobiliario%20para%20mi%20salón%20%F0%9F%92%96"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border-2 border-green-300 text-green-600 hover:bg-green-50 px-8 py-4 rounded-2xl font-semibold transition-colors"
+              className="inline-flex items-center justify-center gap-2 border-2 border-green-300 dark:border-green-700/60 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-stone-800 px-8 py-4 rounded-2xl font-semibold transition-colors"
             >
               <WhatsAppIcon />
               Hablar con un asesor

@@ -1,8 +1,41 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      animation: {
+        'shimmer': 'shimmer 1.8s ease-in-out infinite',
+        'cart-bounce': 'cart-bounce 0.5s ease-out',
+        'heart-pulse': 'heart-pulse 0.4s ease-out',
+        'slide-up': 'slide-up 0.3s ease-out',
+        'testimonial': 'slide-left 30s linear infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        'cart-bounce': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '25%': { transform: 'scale(1.3)' },
+          '50%': { transform: 'scale(0.9)' },
+          '75%': { transform: 'scale(1.1)' },
+        },
+        'heart-pulse': {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.3)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        'slide-up': {
+          from: { transform: 'translateY(20px)', opacity: '0' },
+          to: { transform: 'translateY(0)', opacity: '1' },
+        },
+        testimonial: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
       colors: {
         /*
          * Paleta Jalac — basada en Light Pink #FFB6C1

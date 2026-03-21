@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Package, User as UserIcon, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { Package, User as UserIcon, LayoutDashboard, ShieldCheck, Check, Truck, Box, CreditCard, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { orderApi } from '../services/api';
@@ -23,6 +23,86 @@ const STATUS_COLORS: Record<string, string> = {
   delivered:       'bg-green-50 text-green-600 border border-green-200',
   cancelled:       'bg-red-50 text-red-500 border border-red-200',
 };
+
+const ORDER_STEPS = [
+  { key: 'paid',          icon: CreditCard, label: 'Pagado' },
+  { key: 'processing',    icon: Box,        label: 'Preparando' },
+  { key: 'shipped',      icon: Truck,      label: 'Enviado' },
+  { key: 'delivered',    icon: Check,      label: 'Entregado' },
+];
+
+function getStepStatus(orderStatus: string, stepKey: string): 'completed' | 'active' | 'pending' {
+  const statusOrder = ['pending_payment', 'paid', 'processing', 'shipped', 'delivered'];
+  const cancelled = ['cancelled'];
+  
+  if (cancelled.includes(orderStatus)) return 'pending';
+  
+  const currentIndex = statusOrder.indexOf(orderStatus);
+  const stepIndex = statusOrder.indexOf(stepKey);
+  
+  if (currentIndex > stepIndex) return 'completed';
+  if (currentIndex === stepIndex) return 'active';
+  return 'pending';
+}
+
+function OrderProgressTracker({ status }: { status: string }) {
+  if (status === 'pending_payment') {
+    return (
+      <div className="flex items-center gap-2 text-yellow-500 text-xs">
+        <Clock size={14} />
+        <span>Esperando confirmación de pago</span>
+      </div>
+    );
+  }
+  
+  if (status === 'cancelled') {
+    return (
+      <div className="flex items-center gap-2 text-red-500 text-xs">
+        <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+        <span>Pedido cancelado</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-between gap-1 mt-3">
+      {ORDER_STEPS.map((step, index) => {
+        const stepStatus = getStepStatus(status, step.key);
+        const Icon = step.icon;
+        
+        return (
+          <div key={step.key} className="flex items-center gap-1">
+            <div className="flex flex-col items-center">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                stepStatus === 'completed'
+                  ? 'bg-rose-400 text-white'
+                  : stepStatus === 'active'
+                  ? 'bg-rose-100 dark:bg-rose-900/50 text-rose-400 ring-2 ring-rose-300 dark:ring-rose-600'
+                  : 'bg-stone-100 dark:bg-stone-700 text-stone-300 dark:text-stone-500'
+              }`}>
+                <Icon size={14} />
+              </div>
+              <span className={`text-[10px] mt-1 ${
+                stepStatus === 'completed' || stepStatus === 'active'
+                  ? 'text-rose-500 font-medium'
+                  : 'text-stone-400'
+              }`}>
+                {step.label}
+              </span>
+            </div>
+            {index < ORDER_STEPS.length - 1 && (
+              <div className={`flex-1 h-0.5 mb-4 mx-1 rounded ${
+                stepStatus === 'completed'
+                  ? 'bg-rose-400'
+                  : 'bg-stone-200 dark:bg-stone-600'
+              }`} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Profile() {
   /* Leer directamente del store — no depende de API call que se reinicia */
@@ -158,7 +238,7 @@ export default function Profile() {
             </div>
           ) : (
             orders.map((order) => (
-              <div key={order.id} className="bg-white border border-rose-100 rounded-2xl p-5 shadow-sm">
+              <div key={order.id} className="bg-white dark:bg-stone-800 border border-rose-100 dark:border-stone-700 rounded-2xl p-5 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-xs text-stone-400 font-mono">
                     Pedido #{order.id.slice(0, 8).toUpperCase()}
@@ -167,17 +247,41 @@ export default function Profile() {
                     {STATUS_LABELS[order.status] ?? order.status}
                   </span>
                 </div>
-                <p className="text-sm text-stone-500">
-                  {order.items.length} artículo(s) ·{' '}
-                  {new Date(order.createdAt).toLocaleDateString('es-CO', {
-                    day: 'numeric', month: 'long', year: 'numeric',
-                  })}
-                </p>
-                <p className="text-lg font-bold text-rose-500 mt-2">
-                  {new Intl.NumberFormat('es-CO', {
-                    style: 'currency', currency: 'COP', maximumFractionDigits: 0,
-                  }).format(order.total)}
-                </p>
+                
+                {/* Progress tracker */}
+                <OrderProgressTracker status={order.status} />
+                
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-rose-50 dark:border-stone-700">
+                  <p className="text-sm text-stone-500">
+                    {order.items.length} artículo(s) ·{' '}
+                    {new Date(order.createdAt).toLocaleDateString('es-CO', {
+                      day: 'numeric', month: 'short', year: 'numeric',
+                    })}
+                  </p>
+                  <p className="text-lg font-bold text-rose-500 dark:text-rose-400">
+                    {new Intl.NumberFormat('es-CO', {
+                      style: 'currency', currency: 'COP', maximumFractionDigits: 0,
+                    }).format(order.total)}
+                  </p>
+                </div>
+                
+                {/* Preview de items */}
+                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                  {order.items.slice(0, 4).map((item, i) => (
+                    <div key={i} className="flex-shrink-0 w-12 h-12 rounded-lg bg-rose-50 dark:bg-stone-700 overflow-hidden">
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-rose-200 text-lg">✂️</div>
+                      )}
+                    </div>
+                  ))}
+                  {order.items.length > 4 && (
+                    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-rose-100 dark:bg-stone-600 flex items-center justify-center text-rose-400 text-xs font-medium">
+                      +{order.items.length - 4}
+                    </div>
+                  )}
+                </div>
               </div>
             ))
           )}

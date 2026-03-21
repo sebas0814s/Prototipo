@@ -16,6 +16,7 @@ import Checkout      from './pages/Checkout';
 import Login         from './pages/Login';
 import Profile       from './pages/Profile';
 import About         from './pages/About';
+import Wishlist      from './pages/Wishlist';
 
 /* Páginas admin */
 import AdminLogin     from './pages/admin/AdminLogin';
@@ -26,7 +27,7 @@ import ProductForm    from './pages/admin/ProductForm';
 /* Wrapper de la tienda pública (Navbar + Footer) */
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-stone-50">
+    <div className="min-h-screen flex flex-col bg-stone-50 dark:bg-stone-950">
       <Navbar />
       <div className="flex-1">{children}</div>
       <Footer />
@@ -89,6 +90,7 @@ export default function App() {
           <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
           <Route path="/profile" element={<PublicLayout><Profile /></PublicLayout>} />
           <Route path="/about"   element={<PublicLayout><About /></PublicLayout>} />
+          <Route path="/wishlist" element={<PublicLayout><Wishlist /></PublicLayout>} />
         </Routes>
       </BrowserRouter>
 
